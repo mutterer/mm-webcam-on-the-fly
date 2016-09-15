@@ -29,6 +29,8 @@ public class WebcamConfigurator extends MMFrame implements ProcessorConfigurator
 	private javax.swing.JComboBox cameraComboBox_;
 	private javax.swing.JLabel exampleImageTarget_;
 	private javax.swing.JComboBox wcComboBox_;
+	private javax.swing.JComboBox resolutionsComboBox_;
+	private Dimension[] viewSizes;
 
 	public WebcamConfigurator(Studio studio, PropertyMap settings) {
 		studio_ = studio;
@@ -38,9 +40,9 @@ public class WebcamConfigurator extends MMFrame implements ProcessorConfigurator
 						WebcamConfigurator.class, DEFAULT_CAMERA,
 						studio_.core().getCameraDevice()));
 
-		String webcam = settings.getString("webcam",
-				studio_.profile().getString(
-						WebcamConfigurator.class, DEFAULT_WEBCAM, ""));
+		int webcam = settings.getInt("webcam",
+				studio_.profile().getInt(
+						WebcamConfigurator.class, DEFAULT_WEBCAM, 0));
 
 		wcComboBox_.removeAllItems();
 		int n = 0;
@@ -53,7 +55,8 @@ public class WebcamConfigurator extends MMFrame implements ProcessorConfigurator
 		for (String item: cameraNames) {
 			wcComboBox_.addItem(item);
 		}
-		wcComboBox_.setSelectedItem(webcam);
+		wcComboBox_.setSelectedIndex(webcam);
+
 		this.loadAndRestorePosition(frameXPos_, frameYPos_);
 		updateCameras();
 	}
@@ -154,9 +157,9 @@ public class WebcamConfigurator extends MMFrame implements ProcessorConfigurator
 	private void wcComboBox_ActionPerformed(java.awt.event.ActionEvent evt) {
 		String camera = (String) cameraComboBox_.getSelectedItem();
 		if (camera != null && wcComboBox_.getSelectedItem() != null) {
-			studio_.profile().setString(WebcamConfigurator.class,
+			studio_.profile().setInt(WebcamConfigurator.class,
 					DEFAULT_WEBCAM + "-" + camera,
-					(String) wcComboBox_.getSelectedItem());
+					(int) wcComboBox_.getSelectedIndex());
 		}
 		studio_.data().notifyPipelineChanged();
 	}//GEN-LAST:event_rotateComboBox_ActionPerformed
@@ -174,16 +177,16 @@ public class WebcamConfigurator extends MMFrame implements ProcessorConfigurator
 		return (String) cameraComboBox_.getSelectedItem();
 	}
 
-	public final String getSelectedWebcamName() {
+	public final int getSelectedWebcamIndex() {
 
-		return  (String) wcComboBox_.getSelectedItem();
+		return  (int) wcComboBox_.getSelectedIndex();
 	}
 
 	@Override
 	public PropertyMap getSettings() {
 		PropertyMap.PropertyMapBuilder builder = studio_.data().getPropertyMapBuilder();
 		builder.putString("camera", getCamera());
-		builder.putString("webcam", getSelectedWebcamName());
+		builder.putInt("webcam", getSelectedWebcamIndex());
 		return builder.build();
 	}
 }

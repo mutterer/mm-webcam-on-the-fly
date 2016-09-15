@@ -27,7 +27,7 @@ public class WebcamFactory implements ProcessorFactory {
    public Processor createProcessor() {
       return new WebcamProcessor(studio_, 
     		settings_.getString("camera", ""),
-    		settings_.getString("webcam", ""),
+    		settings_.getInt("webcam", 0),
     		new Dimension(settings_.getInt("width",640), settings_.getInt("width",480))
       );
    }

@@ -30,16 +30,16 @@ public class WebcamProcessor extends Processor {
 
    private Studio studio_;
    String camera_;
-   String webcam_;
+   int webcam_;
    boolean arg1_;
    Dimension resolution_;
 
-   public WebcamProcessor(Studio studio, String camera,String webcamName, Dimension d) {
+   public WebcamProcessor(Studio studio, String camera,int webcamIndex, Dimension d) {
       studio_ = studio;
       camera_ = camera;
-      webcam_ = webcamName;
+      webcam_ = webcamIndex;
       
-      webcam = Webcam.getDefault();
+      webcam = Webcam.getWebcams().get(webcamIndex);
       if (!webcam.isOpen())      
     	  {	webcam.setViewSize(d);
     	  	webcam.open();

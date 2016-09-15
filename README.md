@@ -14,3 +14,4 @@ Links
 * Webcam Capture documentation: http://webcam-capture.sarxos.pl
 
 
+[![](https://github.com/mutterer/mm-webcam-on-the-fly/blob/master/snap.jpg)]()
